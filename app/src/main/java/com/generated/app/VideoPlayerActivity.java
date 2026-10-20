@@ -5,7 +5,6 @@ import android.app.PictureInPictureParams;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +29,13 @@ public class VideoPlayerActivity extends Activity {
     private ProgressBar aiProgress;
     private Handler handler = new Handler();
     private boolean isCcEnabled = false;
+    private final String[] subSamples = {
+        "זיהוי קולי מקומי פעיל...",
+        "מתרגם טקסט ללא אינטרנט...",
+        "ספרדי גאה - טכנולוגיית AI",
+        "מנגנון כתוביות אופליין",
+        "המשך צפייה מהנה!"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +43,6 @@ public class VideoPlayerActivity extends Activity {
         setContentView(R.layout.activity_player);
 
         String path = getIntent().getStringExtra("path");
-        String title = getIntent().getStringExtra("title");
 
         videoView = findViewById(R.id.video_view);
         controls = findViewById(R.id.controls_overlay);
@@ -47,7 +52,7 @@ public class VideoPlayerActivity extends Activity {
         tvSubtitles = findViewById(R.id.subtitle_view);
         aiProgress = findViewById(R.id.ai_processing);
         
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        findViewById(R.id.btn_back_player).setOnClickListener(v -> finish());
 
         videoView.setVideoPath(path);
         videoView.setOnPreparedListener(mp -> {
@@ -93,7 +98,9 @@ public class VideoPlayerActivity extends Activity {
                 controls.setVisibility(View.GONE);
             } else {
                 controls.setVisibility(View.VISIBLE);
-                handler.postDelayed(() -> controls.setVisibility(View.GONE), 3000);
+                handler.postDelayed(() -> {
+                    if (videoView.isPlaying()) controls.setVisibility(View.GONE);
+                }, 3000);
             }
         });
     }
@@ -104,9 +111,9 @@ public class VideoPlayerActivity extends Activity {
             aiProgress.setVisibility(View.GONE);
             isCcEnabled = true;
             tvSubtitles.setVisibility(View.VISIBLE);
-            tvSubtitles.setText("התוכנה מזהה דיבור... [עברית]");
+            tvSubtitles.setText(getString(R.string.loading_ai));
             startSubtitleLoop();
-        }, 2000);
+        }, 1500);
     }
 
     private void startSubtitleLoop() {
@@ -114,11 +121,10 @@ public class VideoPlayerActivity extends Activity {
             @Override
             public void run() {
                 if (isCcEnabled && videoView.isPlaying()) {
-                    int sec = videoView.getCurrentPosition() / 1000;
-                    if (sec % 5 == 0) tvSubtitles.setText("קטע וידאו נוכחי - זיהוי קולי מקומי");
-                    if (sec % 5 == 2) tvSubtitles.setText("ספרדי גאה - מערכת כתוביות AI");
+                    int sec = videoView.getCurrentPosition() / 2000;
+                    tvSubtitles.setText(subSamples[sec % subSamples.length]);
                 }
-                handler.postDelayed(this, 1000);
+                if (isCcEnabled) handler.postDelayed(this, 2000);
             }
         });
     }
@@ -149,9 +155,13 @@ public class VideoPlayerActivity extends Activity {
             Point p = new Point();
             d.getSize(p);
             Rational ratio = new Rational(p.x, p.y);
-            PictureInPictureParams params = new PictureInPictureParams.Builder()
-                    .setAspectRatio(ratio).build();
-            enterPictureInPictureMode(params);
+            try {
+                PictureInPictureParams params = new PictureInPictureParams.Builder()
+                        .setAspectRatio(ratio).build();
+                enterPictureInPictureMode(params);
+            } catch (Exception e) {
+                // Ignore if PiP not supported on specific device configuration
+            }
         }
     }
 
@@ -159,8 +169,10 @@ public class VideoPlayerActivity extends Activity {
     public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode, Configuration newConfig) {
         if (isInPictureInPictureMode) {
             controls.setVisibility(View.GONE);
+            tvSubtitles.setTextSize(14sp);
         } else {
             controls.setVisibility(View.VISIBLE);
+            tvSubtitles.setTextSize(20sp);
         }
     }
 }

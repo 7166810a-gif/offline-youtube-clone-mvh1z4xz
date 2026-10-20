@@ -5,7 +5,7 @@
     <string name="recommendations">מומלץ עבורך</string>
     <string name="settings">הגדרות</string>
     <string name="about">אודות</string>
-    <string name="about_text">האפליקציה פותחה על ידי ספרדי גאה. מנוע AI מקומי לכתוביות.</string>
+    <string name="about_text">האפליקציה פותחה על ידי ספרדי גאה. מנוע AI מקומי לכתוביות 100% אופליין.</string>
     <string name="permissions_required">נדרשת הרשאה לגישה לסרטונים במכשיר</string>
     <string name="generate_subtitles">ייצור כתוביות אוטומטי (Hebrew/English)</string>
     <string name="ai_model_management">ניהול מודל AI</string>
@@ -15,4 +15,5 @@
     <string name="subtitles_active">כתוביות פעילות</string>
     <string name="translation_active">תרגום פעיל</string>
     <string name="dev_name">ספרדי גאה (Proud Spaniard)</string>
+    <string name="loading_ai">טוען מודל AI מקומי...</string>
 </resources>

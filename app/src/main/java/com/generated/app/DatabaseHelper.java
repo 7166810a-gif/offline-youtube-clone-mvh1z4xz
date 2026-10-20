@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +48,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Long> getRecommendedIds() {
         List<Long> ids = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        // Simple logic: most viewed and recently viewed
         Cursor cursor = db.rawQuery("SELECT video_id FROM history ORDER BY view_count DESC, last_viewed DESC LIMIT 10", null);
         while (cursor.moveToNext()) {
             ids.add(cursor.getLong(0));
