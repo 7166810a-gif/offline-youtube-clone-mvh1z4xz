@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">יוטיוב אופליין</string>
+    <string name="home">בית</string>
+    <string name="history">היסטוריה</string>
+    <string name="recommendations">מומלץ עבורך</string>
+    <string name="settings">הגדרות</string>
+    <string name="about">אודות</string>
+    <string name="about_text">האפליקציה פותחה על ידי ספרדי גאה. מנוע AI מקומי לכתוביות.</string>
+    <string name="permissions_required">נדרשת הרשאה לגישה לסרטונים במכשיר</string>
+    <string name="generate_subtitles">ייצור כתוביות אוטומטי (Hebrew/English)</string>
+    <string name="ai_model_management">ניהול מודל AI</string>
+    <string name="import_model">ייבוא מודל מהמכשיר</string>
+    <string name="no_videos">לא נמצאו סרטונים במכשיר</string>
+    <string name="pip_mode">מצב חלון צף</string>
+    <string name="subtitles_active">כתוביות פעילות</string>
+    <string name="translation_active">תרגום פעיל</string>
+    <string name="dev_name">ספרדי גאה (Proud Spaniard)</string>
+</resources>
